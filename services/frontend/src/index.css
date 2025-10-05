@@ -1,0 +1,8 @@
+@import "./styles/variables.css";
+@import "tailwindcss";
+
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+}
