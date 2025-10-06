@@ -35,8 +35,8 @@ jobs:
     # Step 5: Build and Push Docker Image
     - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:latest .
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:latest
+        docker buildx build --push -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:latest ./services/backend
+
 
     # Step 6: Deploy to Azure Container App
     - name: Deploy to Azure Container App
