@@ -43,5 +43,5 @@ jobs:
       run: |
         az containerapp update \
           --name backend-app \
-          --resource-group backend-rg \
+          --resource-group project-one \
           --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:latest
