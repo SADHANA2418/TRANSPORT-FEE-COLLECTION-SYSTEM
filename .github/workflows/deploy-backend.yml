@@ -18,13 +18,21 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    # Step 3: Login to Azure using Service Principal
+    # Step 3: Azure Login using Service Principal
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Step 4: Login to Azure Container Registry
+    # Step 4: Debug registry values (before using them)
+    - name: Debug Registry Info
+      run: |
+        echo "Registry login server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'"
+        echo "Username: '${{ secrets.REGISTRY_USERNAME }}'"
+        echo "Checking DNS resolution for registry..."
+        nslookup ${{ secrets.REGISTRY_LOGIN_SERVER }} || dig ${{ secrets.REGISTRY_LOGIN_SERVER }} || echo "❌ DNS lookup failed!"
+
+    # Step 5: Login to Azure Container Registry
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
@@ -32,13 +40,14 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    # ✅ Step 5: Build and Push Docker Image with Version Tag
+    # Step 6: Build and Push Docker Image with version tag
     - name: Build and Push Docker Image
       run: |
         IMAGE="${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend"
         TAG=$(date +%Y%m%d%H%M%S)
-        echo "Building image with tag: $TAG"
-        
+        echo "🛠️ Building image with tag: $TAG"
+        echo "Full image path: $IMAGE:$TAG"
+
         docker buildx build \
           --push \
           -t "$IMAGE:latest" \
@@ -47,9 +56,10 @@ jobs:
 
         echo "TAG=$TAG" >> $GITHUB_ENV
 
-    # ✅ Step 6: Deploy to Azure Container App (using versioned image)
+    # Step 7: Deploy to Azure Container App
     - name: Deploy to Azure Container App
       run: |
+        echo "🚀 Deploying image ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
         az containerapp update \
           --name backend-app \
           --resource-group project-one \
