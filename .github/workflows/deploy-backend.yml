@@ -59,11 +59,11 @@ jobs:
     # Step 7: Deploy to Azure Container App
     - name: Deploy to Azure Container App
       run: |
-        echo "🚀 Deploying image ${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
-        az containerapp update \
-          --name backend-app \
-          --resource-group project-one \
-          --image "${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
+       IMAGE="${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
+       echo "🚀 Deploying image $IMAGE"
+       az acr login --name transport1east
+       az containerapp update --name backend-app --resource-group project-one --image "$IMAGE"
+
 
     - name: Terraform Apply
       run: terraform apply -auto-approve \
