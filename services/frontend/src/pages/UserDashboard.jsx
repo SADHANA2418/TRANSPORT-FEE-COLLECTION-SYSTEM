@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Menu, LayoutDashboard, CreditCard, FileText, LogOut } from "lucide-react";
 import StudentImg from "../assets/team.png";
-import ProfileModal from "../components/profileModal";
+import ProfileModal from "../components/ProfileModal";
 
 const UserDashboard = () => {
     const [isOpen, setIsOpen] = useState(true);
