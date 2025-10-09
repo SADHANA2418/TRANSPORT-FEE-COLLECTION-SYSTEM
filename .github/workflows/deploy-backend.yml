@@ -64,3 +64,7 @@ jobs:
           --name backend-app \
           --resource-group project-one \
           --image "${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve \
+        -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
