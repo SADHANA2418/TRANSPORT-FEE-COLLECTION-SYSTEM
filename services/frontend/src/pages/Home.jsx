@@ -8,6 +8,7 @@ function Home() {
     const [error, setError] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const handleContinue = async () => {
         if (!email) {
@@ -16,7 +17,7 @@ function Home() {
         }
 
         try {
-            const res = await fetch("http://localhost:3000/auth/check-user", {
+            const res = await fetch(`${BASE_URL}/auth/check-user`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -50,7 +51,7 @@ function Home() {
         }
 
         try {
-            const res = await fetch("http://localhost:3000/auth/login", {
+            const res = await fetch(`${BASE_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
