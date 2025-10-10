@@ -20,6 +20,8 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const Dashboard = () => {
     const navigate = useNavigate();
 
@@ -55,7 +57,7 @@ const Dashboard = () => {
             }
 
             try {
-                const res = await axios.get("http://localhost:3000/admin/dashboard", {
+                const res = await axios.get(`${BASE_URL}/admin/dashboard`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
