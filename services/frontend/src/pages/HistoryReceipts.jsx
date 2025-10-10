@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const HistoryReceipts = () => {
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -16,7 +17,7 @@ const HistoryReceipts = () => {
         }
 
         try {
-            const res = await axios.get("http://localhost:3000/student/fee/history", {
+            const res = await axios.get(`${BASE_URL}/student/fee/history`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -37,7 +38,7 @@ const HistoryReceipts = () => {
 
         try {
             const res = await axios.get(
-                `http://localhost:3000/student/download-receipt/${paymentId}`,
+                `${BASE_URL}/student/download-receipt/${paymentId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
