@@ -4,6 +4,7 @@ import { DollarSign, Clock, AlertTriangle, Calendar, FileText } from "lucide-rea
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const UserDashboardIndex = () => {
     const navigate = useNavigate();
     const [dashboard, setDashboard] = useState(null);
@@ -14,7 +15,7 @@ const UserDashboardIndex = () => {
     useEffect(() => {
         const fetchDashboard = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/student/dashboard", {
+                const response = await axios.get(`${BASE_URL}/student/dashboard`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setDashboard(response.data);
