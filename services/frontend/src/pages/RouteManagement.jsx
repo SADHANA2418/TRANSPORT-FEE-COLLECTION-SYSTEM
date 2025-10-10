@@ -1,8 +1,9 @@
 // src/pages/RouteManagement.jsx
 import React, { useState, useEffect } from "react";
 import { Trash2, Download, Edit, Search } from "lucide-react";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const API_URL = "http://localhost:3000/admin"; // keep as your backend mounting
+const API_URL = `${BASE_URL}/admin`; // keep as your backend mounting
 
 const RouteManagement = () => {
     const [routes, setRoutes] = useState([]);
