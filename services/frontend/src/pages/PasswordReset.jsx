@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function PasswordReset() {
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const location = useLocation();
     const { email } = location.state || { email: "" };
@@ -20,7 +21,7 @@ function PasswordReset() {
         }
 
         try {
-            const res = await fetch("http://localhost:3000/auth/set-password", {
+            const res = await fetch(`${BASE_URL}/auth/set-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password, confirmPassword: confirm }),
