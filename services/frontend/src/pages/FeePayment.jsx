@@ -6,13 +6,14 @@ const FeePayment = () => {
     const [amount, setAmount] = useState("");
     const [feeOptions, setFeeOptions] = useState([]);
     const [pending, setPending] = useState(0);
+    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     // Fetch fee options on component mount
     useEffect(() => {
         const fetchFeeOptions = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:3000/student/fee/options", {
+                const res = await axios.get(`${BASE_URL}/student/fee/options`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setFeeOptions(res.data.options);
@@ -31,7 +32,7 @@ const FeePayment = () => {
 
             // 1. Create payment order on backend
             const res = await axios.post(
-                "http://localhost:3000/student/fee/create-order",
+                `${BASE_URL}/student/fee/create-order`,
                 { option: optionKey },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -49,7 +50,7 @@ const FeePayment = () => {
                 handler: async function (response) {
                     // 3. Verify payment on backend
                     await axios.post(
-                        "http://localhost:3000/student/fee/verify",
+                        `${BASE_URL}/student/fee/verify`,
                         {
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_order_id: response.razorpay_order_id,
