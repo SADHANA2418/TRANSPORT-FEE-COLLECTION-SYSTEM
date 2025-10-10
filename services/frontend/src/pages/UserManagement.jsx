@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Download, Trash2, UserPlus, Edit2 } from "lucide-react";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const API_URL = "http://localhost:3000/admin";
+const API_URL = `${BASE_URL}/admin`;
+
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
