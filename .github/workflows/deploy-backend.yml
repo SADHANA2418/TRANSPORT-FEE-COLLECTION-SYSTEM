@@ -69,7 +69,10 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: '1.5.7'  # Specify desired version
-
+    # Step: Terraform Init
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./services/terraform
     # Step 9: Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
