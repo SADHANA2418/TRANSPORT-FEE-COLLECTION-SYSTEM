@@ -73,3 +73,4 @@ jobs:
     # Step 9: Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+      working-directory: ./services/terraform
