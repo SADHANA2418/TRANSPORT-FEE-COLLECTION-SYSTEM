@@ -64,7 +64,12 @@ jobs:
        az acr login --name transport1east
        az containerapp update --name backend-app --resource-group project-one --image "$IMAGE"
 
+    # Step 8: Setup Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.5.7'  # Specify desired version
 
+    # Step 9: Terraform Apply
     - name: Terraform Apply
-      run: terraform apply -auto-approve \
-        -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+      run: terraform apply -auto-approve -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
