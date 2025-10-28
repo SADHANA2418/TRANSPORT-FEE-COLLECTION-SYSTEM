@@ -3,14 +3,14 @@ name: CI/CD Backend Deployment
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to main branch
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
+    # Step 1: Checkout code
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -24,15 +24,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Step 4: Debug registry values (before using them)
-    - name: Debug Registry Info
+    # Step 4: Explicit Azure CLI login to ACR (for extra safety)
+    - name: Azure CLI login to ACR
       run: |
-        echo "Registry login server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'"
-        echo "Username: '${{ secrets.REGISTRY_USERNAME }}'"
-        echo "Checking DNS resolution for registry..."
-        nslookup ${{ secrets.REGISTRY_LOGIN_SERVER }} || dig ${{ secrets.REGISTRY_LOGIN_SERVER }} || echo "❌ DNS lookup failed!"
+        echo "🔐 Logging in to ACR via Azure CLI..."
+        az acr login --name transport1east
 
-    # Step 5: Login to Azure Container Registry
+    # Step 5: Docker login using ACR credentials (double sure)
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
@@ -40,7 +38,7 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    # Step 6: Build and Push Docker Image with version tag
+    # Step 6: Build and Push Docker Image
     - name: Build and Push Docker Image
       run: |
         IMAGE="${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend"
@@ -59,21 +57,25 @@ jobs:
     # Step 7: Deploy to Azure Container App
     - name: Deploy to Azure Container App
       run: |
-       IMAGE="${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
-       echo " Deploying image $IMAGE"
-       az acr login --name transport1east
-       az containerapp update --name backend-app --resource-group project-one --image "$IMAGE"
+        IMAGE="${{ secrets.REGISTRY_LOGIN_SERVER }}/mybackend:${{ env.TAG }}"
+        echo "🚀 Deploying image $IMAGE"
+        az containerapp update \
+          --name backend-app \
+          --resource-group project-one \
+          --image "$IMAGE"
 
     # Step 8: Setup Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: '1.5.7'  # Specify desired version
-    # Step: Terraform Init
+        terraform_version: '1.5.7'
+
+    # Step 9: Terraform Init
     - name: Terraform Init
       run: terraform init
       working-directory: ./services/terraform
-    # Step 9: Terraform Apply
+
+    # Step 10: Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve -var "storage_connection_string=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
       working-directory: ./services/terraform
