@@ -6,7 +6,7 @@ const FeePayment = () => {
     const [amount, setAmount] = useState("");
     const [feeOptions, setFeeOptions] = useState([]);
     const [pending, setPending] = useState(0);
-    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     // Fetch fee options on component mount
     useEffect(() => {
