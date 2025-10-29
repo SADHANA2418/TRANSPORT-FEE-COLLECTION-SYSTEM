@@ -4,7 +4,7 @@ import { DollarSign, Clock, AlertTriangle, Calendar, FileText } from "lucide-rea
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const UserDashboardIndex = () => {
     const navigate = useNavigate();
     const [dashboard, setDashboard] = useState(null);
