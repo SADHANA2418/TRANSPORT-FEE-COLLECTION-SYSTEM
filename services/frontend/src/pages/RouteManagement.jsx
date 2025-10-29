@@ -1,7 +1,7 @@
 // src/pages/RouteManagement.jsx
 import React, { useState, useEffect } from "react";
 import { Trash2, Download, Edit, Search } from "lucide-react";
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const API_URL = `${BASE_URL}/admin`; // keep as your backend mounting
 
