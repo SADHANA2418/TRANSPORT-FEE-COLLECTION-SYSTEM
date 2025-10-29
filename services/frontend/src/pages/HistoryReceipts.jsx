@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const HistoryReceipts = () => {
-    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
