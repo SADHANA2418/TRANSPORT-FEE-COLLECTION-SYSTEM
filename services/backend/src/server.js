@@ -12,8 +12,11 @@ const app = express();
 
 // CORS for frontend
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
+  origin: [
+    'http://localhost:5173',  // for local dev
+    'https://white-pond-0c14daf0f.1.azurestaticapps.net'  // your deployed frontend
+  ],
+  credentials: true,
 }));
 
 app.use(express.json());
