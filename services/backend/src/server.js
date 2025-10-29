@@ -11,13 +11,22 @@ dotenv.config();
 const app = express();
 
 // CORS for frontend
+const allowedOrigins = [
+  "https://white-pond-0c14daf0f.1.azurestaticapps.net", // ✅ your Azure frontend
+  "http://localhost:5173" // keep this for local testing
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',  // for local dev
-    'https://white-pond-0c14daf0f.1.azurestaticapps.net'  // your deployed frontend
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }));
+
 
 app.use(express.json());
 
