@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Download, Trash2, UserPlus, Edit2 } from "lucide-react";
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const API_URL = `${BASE_URL}/admin`;
 
