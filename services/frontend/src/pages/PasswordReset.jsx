@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function PasswordReset() {
-    const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
     const location = useLocation();
     const { email } = location.state || { email: "" };
