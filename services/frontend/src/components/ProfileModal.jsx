@@ -5,11 +5,12 @@ import axios from "axios";
 const ProfileModal = ({ token, onClose }) => {
     const [profile, setProfile] = useState(null);
     const [name, setName] = useState("");
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/student/profile", {
+                const response = await axios.get(`${BASE_URL}/student/profile`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProfile(response.data);
@@ -24,7 +25,7 @@ const ProfileModal = ({ token, onClose }) => {
     const handleSave = async () => {
         try {
             await axios.put(
-                "http://localhost:3000/student/profile",
+                `${BASE_URL}/student/profile`,
                 { name },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
