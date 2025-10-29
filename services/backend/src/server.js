@@ -11,21 +11,30 @@ dotenv.config();
 const app = express();
 
 // CORS for frontend
-const allowedOrigins = [
-  "https://white-pond-0c14daf0f.1.azurestaticapps.net", // ✅ your Azure frontend
-  "http://localhost:5173" // keep this for local testing
-];
-
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://white-pond-0c14daf0f.1.azurestaticapps.net", // Azure frontend
+      "http://localhost:5173" // Local dev
+    ];
+
+    // Allow requests with no origin (like mobile apps or curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.warn("Blocked by CORS:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
-}));
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
+// ✅ Handle preflight requests properly
+app.options("*", cors(corsOptions));
 
 
 app.use(express.json());
