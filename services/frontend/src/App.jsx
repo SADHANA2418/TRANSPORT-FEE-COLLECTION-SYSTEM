@@ -11,6 +11,7 @@ import PaymentsManagement from "./pages/PaymentsManagement.jsx";
 import UserDashboardIndex from "./pages/UserDashboardIndex";
 import FeePayment from "./pages/FeePayment";
 import HistoryReceipts from "./pages/HistoryReceipts";
+import GenAIAssistant from "./pages/GenAIAssistant.jsx";
 
 function App() {
   return (
@@ -28,12 +29,14 @@ function App() {
         <Route path="users" element={<UserManagement />} />
         <Route path="routes" element={<RouteManagement />} />
         <Route path="payments" element={<PaymentsManagement />} />
+        <Route path="genai" element={<GenAIAssistant role="admin" />} />
       </Route>
 
       <Route path="/user/*" element={<UserDashboard />}>
         <Route index element={<UserDashboardIndex />} />
         <Route path="fee-payment" element={<FeePayment />} />
         <Route path="history" element={<HistoryReceipts />} />
+        <Route path="genai" element={<GenAIAssistant role="user" />} />
       </Route>
 
     </Routes>
