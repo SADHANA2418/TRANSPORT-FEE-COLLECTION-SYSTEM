@@ -6,6 +6,7 @@ export default function GenAIAssistant({ role = "user" }) {
     const [query, setQuery] = useState("");
     const [response, setResponse] = useState("");
     const [loading, setLoading] = useState(false);
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const handleAskAI = async () => {
         if (!query.trim()) return;
@@ -13,7 +14,7 @@ export default function GenAIAssistant({ role = "user" }) {
         setResponse("");
 
         try {
-            const res = await fetch("http://localhost:3000/genai/ask", {
+            const res = await fetch(`${BASE_URL}/genai/ask`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ role, query }),
